@@ -32,12 +32,13 @@ const amount = form.querySelector("#amount") as HTMLInputElement;
 
 form.addEventListener("submit", (e: Event) => {
   e.preventDefault();
-
+  let values: [string, string, number];
+  values = [tofrom.value, details.value, amount.valueAsNumber];
   let doc: HasFormatter;
   if (type.value === "invoice") {
-    doc = new Invoice(tofrom.value, details.value, amount.valueAsNumber);
+    doc = new Invoice(...values);
   } else {
-    doc = new Payment(tofrom.value, details.value, amount.valueAsNumber);
+    doc = new Payment(...values);
   }
   list.render(doc, type.value, "start");
 });
@@ -51,10 +52,35 @@ let docOne = addUID({ name: "onos", age: 21 });
 
 // console.log(docOne.name);
 
-interface Resource {
-  uid: number;
-  resourceName: string;
-  data?: string;
+enum ResourceType {
+  BOOK,
+  AUTHOR,
+  FILM,
+  DIRECTOR,
+  PERSON,
 }
 
-const myObj: Resource = { uid: 0, resourceName: "sso" };
+interface Resource<T> {
+  uid: number;
+  resourceName: string;
+  resourceType: ResourceType;
+  data: T;
+}
+
+const docThree: Resource<object> = {
+  uid: 0,
+  resourceName: "sso",
+  data: { name: "Spider Mam" },
+  resourceType: ResourceType.FILM,
+};
+const docFour: Resource<string[]> = {
+  uid: 1,
+  resourceName: "fiele",
+  data: ["onos", "john"],
+  resourceType: ResourceType.PERSON,
+};
+
+// console.log(docFour);
+let arr = ["onos", 21, true];
+let tup: [string, number, boolean] = ["onos", 7, false];
+tup[0] = "ij";
